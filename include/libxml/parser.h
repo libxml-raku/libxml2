@@ -1062,6 +1062,10 @@ XMLPUBFUN int
 					 int depth,
 					 const xmlChar *string,
 					 xmlNodePtr *lst);
+XMLPUBFUN int
+                xmlParseBalancedChunkCtxt(xmlParserCtxtPtr ctxt,
+                                          const xmlChar *string,
+                                          xmlNodePtr *listOut);
 #endif /* LIBXML_SAX1_ENABLED */
 XMLPUBFUN xmlParserErrors
 		xmlParseInNodeContext	(xmlNodePtr node,

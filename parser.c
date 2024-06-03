@@ -12472,7 +12472,7 @@ xmlParseInNodeContext(xmlNodePtr node, const char *data, int datalen,
  *
  * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
  *
- * Returns 0 if the chunk is well balanced, or thehe parser error code
+ * Returns 0 if the chunk is well balanced, or the parser error code
  * otherwise.
  *
  * In case recover is set to 1, the nodelist will not be empty even if
@@ -12484,9 +12484,7 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
      void *user_data, int depth, const xmlChar *string, xmlNodePtr *listOut,
      int recover) {
     xmlParserCtxtPtr ctxt;
-    xmlParserInputPtr input;
-    xmlNodePtr list;
-    int ret;
+     int ret;
 
     if (listOut != NULL)
         *listOut = NULL;
@@ -12498,8 +12496,6 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     if (ctxt == NULL)
         return(XML_ERR_NO_MEMORY);
 
-    xmlCtxtInitializeLate(ctxt);
-
     ctxt->depth = depth;
     ctxt->myDoc = doc;
     if (recover) {
@@ -12507,7 +12503,36 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
         ctxt->recovery = 1;
     }
 
+    ret = xmlParseBalancedChunkCtxt(ctxt, string, listOut);
+    xmlFreeParserCtxt(ctxt);
+    return(ret);
+}
+
+/**
+ * xmlParseBalancedChunkCtxt:
+ * @ctxt: an XML parser context
+ * @string:  the input string in UTF8 or ISO-Latin (zero terminated)
+ * @listOut:  the return value for the set of parsed nodes
+ *
+ * Parse a well-balanced chunk of an XML document
+ *
+ * The allowed sequence for the Well Balanced Chunk is the one defined by
+ * the content production in the XML grammar:
+ *
+ * [43] content ::= (element | CharData | Reference | CDSect | PI | Comment)*
+ *
+ * Returns 0 if the chunk is well balanced, or the parser error code
+ * otherwise.
+ *
+ */
+int
+xmlParseBalancedChunkCtxt(xmlParserCtxtPtr ctxt, const xmlChar *string, xmlNodePtr *listOut) {
+    xmlNodePtr list;
+    xmlParserInputPtr input;
+
+    xmlCtxtInitializeLate(ctxt);
     input = xmlNewStringInputStream(ctxt, string);
+
     if (input == NULL)
         return(ctxt->errNo);
 
@@ -12517,11 +12542,8 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
     else
         xmlFreeNodeList(list);
 
-    ret = ctxt->errNo;
-
     xmlFreeInputStream(input);
-    xmlFreeParserCtxt(ctxt);
-    return(ret);
+    return ctxt->errNo;
 }
 
 /**
