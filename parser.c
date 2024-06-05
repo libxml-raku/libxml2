@@ -12503,13 +12503,13 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
         ctxt->recovery = 1;
     }
 
-    ret = xmlParseBalancedChunkCtxt(ctxt, string, listOut);
+    ret = xmlParseBalancedChunkMemoryCtxt(ctxt, string, listOut);
     xmlFreeParserCtxt(ctxt);
     return(ret);
 }
 
 /**
- * xmlParseBalancedChunkCtxt:
+ * xmlParseBalancedChunkMemoryCtxt:
  * @ctxt: an XML parser context
  * @string:  the input string in UTF8 or ISO-Latin (zero terminated)
  * @listOut:  the return value for the set of parsed nodes
@@ -12526,7 +12526,7 @@ xmlParseBalancedChunkMemoryRecover(xmlDocPtr doc, xmlSAXHandlerPtr sax,
  *
  */
 int
-xmlParseBalancedChunkCtxt(xmlParserCtxtPtr ctxt, const xmlChar *string, xmlNodePtr *listOut) {
+xmlParseBalancedChunkMemoryCtxt(xmlParserCtxtPtr ctxt, const xmlChar *string, xmlNodePtr *listOut) {
     xmlNodePtr list;
     xmlParserInputPtr input;
 

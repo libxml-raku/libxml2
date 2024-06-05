@@ -1063,7 +1063,7 @@ XMLPUBFUN int
 					 const xmlChar *string,
 					 xmlNodePtr *lst);
 XMLPUBFUN int
-                xmlParseBalancedChunkCtxt(xmlParserCtxtPtr ctxt,
+                xmlParseBalancedChunkMemoryCtxt(xmlParserCtxtPtr ctxt,
                                           const xmlChar *string,
                                           xmlNodePtr *listOut);
 #endif /* LIBXML_SAX1_ENABLED */
